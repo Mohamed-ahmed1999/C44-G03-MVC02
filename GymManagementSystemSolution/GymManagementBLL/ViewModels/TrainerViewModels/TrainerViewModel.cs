@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementBLL.ViewModels.TrainerViewModels
 {
-    internal class TrainerViewModel
+    public class TrainerViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
