@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementBLL.ViewModels.PlanViewModels
 {
-    internal class UpdatePlanViewModel
+    public class UpdatePlanViewModel
     {
         [Required(ErrorMessage ="Plan Name is Required")]
         [StringLength(50 , ErrorMessage ="plan name must be Less Than 51 Char")]
