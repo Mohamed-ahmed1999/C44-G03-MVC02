@@ -30,7 +30,6 @@ namespace GymManagementBLL.Services.Classes
                 if (IsEmailExists(createdMember.Email) || IsPhoneExists(createdMember.Phone)) return false;
 
                 var memebr = _mapper.Map<Member>(createdMember);
-
                 _unitOfWork.GetRepository<Member>().Add(memebr);
                 return _unitOfWork.SaveChanges() > 0;
             }
@@ -98,10 +97,14 @@ namespace GymManagementBLL.Services.Classes
 
             var Member = MemberRepo.GetById(MemberId);
             if (Member is null) return false;
-            var HasActiveMemberSessions = _unitOfWork.GetRepository<MemberSession>()
-                .GetAll(x => x.MemberId == MemberId && x.Session.StartDate > DateTime.Now).Any();
 
-            if (HasActiveMemberSessions) return false;
+            var SessionIds = _unitOfWork.GetRepository<MemberSession>()
+                .GetAll(x => x.MemberId == MemberId).Select(x => x.SessionId);
+
+            var HasFutureSessions = _unitOfWork.GetRepository<Session>()
+                .GetAll(x => SessionIds.Contains(x.Id) && x.StartDate > DateTime.Now).Any();
+
+            if (HasFutureSessions) return false;
 
 
             var MembershipRepo = _unitOfWork.GetRepository<MemberShip>();
@@ -127,11 +130,15 @@ namespace GymManagementBLL.Services.Classes
 
         public bool UpdateMemberDetails(int Id, MemberToUpdateViewModel UpdatedMember)
         {
-            try 
-            {
-                if (IsEmailExists(UpdatedMember.Email) || IsPhoneExists(UpdatedMember.Phone)) return false;
 
-                var repo = _unitOfWork.GetRepository<Member>();
+            var emailExists = _unitOfWork.GetRepository<Member>()
+                .GetAll(x => x.Email == UpdatedMember.Email && x.Id != Id);
+
+            var PhoneExists = _unitOfWork.GetRepository<Member>()
+                .GetAll(x => x.Phone == UpdatedMember.Phone && x.Id != Id);
+            if (emailExists.Any() || PhoneExists.Any()) return false;
+            var repo = _unitOfWork.GetRepository<Member>();
+
                 var Member = repo.GetById(Id);
                 if (Member is null) return false;
 
@@ -141,12 +148,7 @@ namespace GymManagementBLL.Services.Classes
                 repo.Update(Member) ;
                 return _unitOfWork.SaveChanges() > 0;  
 
-            }
-
-            catch 
-            {
-                return false;
-            }
+           
         }
 
         #region Helper Methods
