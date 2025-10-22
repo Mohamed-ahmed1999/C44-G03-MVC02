@@ -23,7 +23,6 @@ namespace GymManagementPL
             });
 
             //builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-            //builder.Services.AddScoped<IPlanRepository , PlanRepository>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
@@ -31,6 +30,8 @@ namespace GymManagementPL
             builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
             builder.Services.AddScoped<IMemberServices, MemberService>();
             builder.Services.AddScoped<ITrainerServices, TrainerService>();
+            builder.Services.AddScoped<IPlanServices, PlanService>();
+            builder.Services.AddScoped<ISessionService, SessionService>();
 
 
             var app = builder.Build();

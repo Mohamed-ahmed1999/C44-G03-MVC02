@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using GymManagementBLL.Services.Interface;
 using GymManagementBLL.ViewModels.PlanViewModels;
 using GymManangementDAL.Entities;
@@ -27,7 +27,7 @@ namespace GymManagementBLL.Services.Classes
         public IEnumerable<PlanViewModel> GetAllPlans()
         {
             var Plans = _unitOfWork.GetRepository<Plan>().GetAll();
-            if (Plans is null || Plans.Any()) return [];
+            if (Plans is null || !Plans.Any()) return [];
 
             return _mapper.Map<IEnumerable<PlanViewModel>>(Plans);
         }
@@ -73,19 +73,17 @@ namespace GymManagementBLL.Services.Classes
 
         public bool ToggleStatus(int PlanId)
         {
-            var Repo = _unitOfWork.GetRepository<Plan>();
-            var Plan = Repo.GetById(PlanId);
-            if (Plan is null || HasActiveMemberShips(PlanId)) return false;
-            Plan.IsActive = Plan.IsActive == true ? false : true;
-
-            Plan.UpdatedAt = DateTime.Now;
-
-            try 
+            try
             {
+                var Repo = _unitOfWork.GetRepository<Plan>();
+                var Plan = Repo.GetById(PlanId);
+                if (Plan is null || HasActiveMemberShips(PlanId)) return false;
+                Plan.IsActive = Plan.IsActive == true ? false : true;
+                Plan.UpdatedAt = DateTime.Now;
                 Repo.Update(Plan);
                 return _unitOfWork.SaveChanges() > 0;
             }
-            catch 
+            catch
             {
                 return false;
             }

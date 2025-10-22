@@ -95,7 +95,6 @@ namespace GymManagementPL.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.TrainerId = id; 
             return View(trainer);
         }
 
@@ -104,7 +103,7 @@ namespace GymManagementPL.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.TrainerId = id;
+                ModelState.AddModelError("DataMissed", "Check data and missing fields");   
                 return View(updatedTrainer);
             }
 
@@ -138,7 +137,6 @@ namespace GymManagementPL.Controllers
             }
 
             ViewBag.TrainerId = id;
-            ViewBag.TrainerName = trainer.Name;
             return View("DeleteTrainer"); 
         }
 

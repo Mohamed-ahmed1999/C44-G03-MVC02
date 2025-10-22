@@ -1,13 +1,17 @@
 ﻿@using GymManangementDAL.Entities.Enums
 @model CreateTrainerViewModel
+@{
+    ViewData["Title"] = "Create Trainer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 
-@Html.ValidationMessage("DataInvalid" , new {@class = "text-danger" })
 <div class="container mt-4">
     <header class="mb-4">
         <h3 class="text-primary-color">Add New Trainer</h3>
     </header>
 
+    @Html.ValidationMessage("DataInvalid", new { @class = "text-danger" })
     <form asp-action="Create" method="post">
 
         <!-- Trainer Info -->
@@ -80,27 +84,11 @@
         </div>
         <div class="row g-3">
             <div class="col-12">
-                <label class="form-label fw-semibold">
-                    Specializations <span class="text-danger">*</span>
-                </label>
-
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="Specialties"
-                           value="GeneralFitness" />
-                    <label class="form-check-label">GeneralFitness</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="Specialties" value="Yoga" />
-                    <label class="form-check-label">Yoga</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="Specialties" value="Boxing" />
-                    <label class="form-check-label">Boxing</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="Specialties" value="CrossFit" />
-                    <label class="form-check-label">CrossFit</label>
-                </div>
+               <label asp-for="Specialties" class="form-label"></label>
+                <select asp-for="Specialties" asp-items="Html.GetEnumSelectList<Specialties>()" class="form-select" multiple="multiple">
+                    <option value="">-- Select Specialties --</option>
+                </select>
+                <span asp-validation-for="Specialties" class="text-danger"></span>
             </div>
 
         </div>
@@ -114,7 +102,8 @@
 
 @section Scripts
 {
-    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
 
 }
 

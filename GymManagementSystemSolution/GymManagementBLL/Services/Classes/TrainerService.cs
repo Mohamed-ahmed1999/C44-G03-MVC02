@@ -15,10 +15,12 @@ namespace GymManagementBLL.Services.Classes
     public class TrainerService : ITrainerServices
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public TrainerService(IUnitOfWork unitOfWork)
+        public TrainerService(IUnitOfWork unitOfWork , IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         public bool CreateTrainer(CreateTrainerViewModel createdTrainer)
         {
@@ -113,20 +115,19 @@ namespace GymManagementBLL.Services.Classes
         public bool UpdateTrainerDetails(TrainerToUpdateViewModel updatedTrainer, int trainerId)
         {
             var repo = _unitOfWork.GetRepository<Trainer>();
-            var trainer = repo.GetById(trainerId);
+            var trainerToUpdate = repo.GetById(trainerId);
 
-            if (trainer == null || IsEmailExists(updatedTrainer.Email) || IsPhoneExists(updatedTrainer.Phone))
-                return false;
+            var emailExists = _unitOfWork.GetRepository<Trainer>().GetAll(
+                m => m.Email == updatedTrainer.Email && m.Id != trainerId);
 
-            trainer.Email = updatedTrainer.Email;
-            trainer.Phone = updatedTrainer.Phone;
-            trainer.Address.BuildingNumber = updatedTrainer.BuildingNumber;
-            trainer.Address.Street = updatedTrainer.Street;
-            trainer.Address.City = updatedTrainer.City;
-            trainer.Specialties = updatedTrainer.Specialties;
-            trainer.UpdatedAt = DateTime.Now;
+            var phoneExists = _unitOfWork.GetRepository<Trainer>().GetAll(
+                m => m.Phone == updatedTrainer.Phone && m.Id != trainerId);
 
-            repo.Update(trainer);
+            if (emailExists.Any() || phoneExists.Any()) return false;
+            if (trainerToUpdate is null) return false;
+
+            _mapper.Map(updatedTrainer, trainerToUpdate);
+            repo.Update(trainerToUpdate);
             return _unitOfWork.SaveChanges() > 0;
         }
 

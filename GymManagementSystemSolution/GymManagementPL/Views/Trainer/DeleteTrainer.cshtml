@@ -1,4 +1,7 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Delete Trainer";
+    Layout = "~/Views/Shared/_Layout.cshtml";   
+}
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -11,7 +14,7 @@
                 </div>
 
                 <form asp-action="DeleteTrainerConfirmed" method="post" class="mt-4">
-                    <input hidden readonly name="id" value="@ViewBag.TrainerId" />
+                    <input type="hidden" name="id" value="@ViewBag.TrainerId" readonly/>
                     <div class="buttons d-flex justify-content-between gap-3">
                         <a asp-controller="Trainer" asp-action="Index" class="btn-outline flex-fill">NO</a>
                         <button type="submit" class="btn-fill flex-fill">Yes</button>
