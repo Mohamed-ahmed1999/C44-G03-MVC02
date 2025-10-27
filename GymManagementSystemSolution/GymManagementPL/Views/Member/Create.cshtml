@@ -1,11 +1,14 @@
 ﻿@using GymManangementDAL.Entities.Enums
 @model CreateMemberViewModel 
+@{
+     ViewData["Title"] = "CreateMembers";
+}
 <header class="mb-4">
     <h3 class="text-primary-color">Add Member</h3>
 </header>
 
 @Html.ValidationMessage("DataInvalid", new { @class = "text-danger" })
-<form asp-action="CreateMember" method="post">
+<form asp-action="CreateMember" method="post"   enctype="multipart/form-data">
 
     <!-- Step navigation -->
     <ul class="nav nav-tabs mb-4" id="addMemberTabs" role="tablist">
@@ -34,6 +37,19 @@
             </div>
             <div class="row g-3">
                 <div class="col-12 col-md-6">
+
+                    <div class="form-group">
+                        <!-- Photo Preview -->
+                        <div class="mt-2">
+                            <img id="photoPreview" src="#" alt="Photo Preview" style="max-width: 200px; display: none;"
+                                 class="img-thumbnail" />
+                        </div>
+                        <label asp-for="PhotoFile" class="control-label">Profile Photo <span class="text-danger">*</span></label>
+                        <input asp-for="PhotoFile" type="file" class="form-control" accept="image/*" id="photoInput" required />
+                        <span asp-validation-for="PhotoFile" class="text-danger"></span>
+                        <small class="form-text text-muted">Max size: 5 MB. Allowed types: JPG, PNG (Required)</small>
+                    </div>
+
                     <label asp-for="Name" class="form-label"></label>
                     <input asp-for="Name" type="text" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
@@ -149,6 +165,22 @@
 @section Scripts
 {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Preview photo before upload
+        document.getElementById('photoInput').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var preview = document.getElementById('photoPreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 
 }
 
