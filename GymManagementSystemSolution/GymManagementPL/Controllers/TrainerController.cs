@@ -4,6 +4,7 @@ using GymManagementBLL.ViewModels.MemberViewModels;
 using GymManagementBLL.ViewModels.TrainerViewModels;
 using GymManangementDAL.Entities;
 using GymManangementDAL.Entities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Options;
@@ -14,6 +15,8 @@ using System;
 
 namespace GymManagementPL.Controllers
 {
+    [Authorize(Roles ="SuperAdmin")]
+
     public class TrainerController : Controller
     {
         private readonly ITrainerServices _trainerServices;
