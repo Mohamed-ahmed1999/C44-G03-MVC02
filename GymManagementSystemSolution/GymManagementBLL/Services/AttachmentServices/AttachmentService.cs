@@ -35,7 +35,7 @@ namespace GymManagementBLL.Services.AttachmentServices
                 using var filestream = new FileStream(filePath, FileMode.Create);
                 file.CopyTo(filestream);
 
-                return fileName;
+                return $"/images/{folderName}/{fileName}";
             }
             catch (Exception ex)
             {

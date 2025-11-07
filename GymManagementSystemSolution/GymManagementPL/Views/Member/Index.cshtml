@@ -57,7 +57,7 @@
                                                 @if(string.IsNullOrEmpty(member.Photo))
                                                 {
                                                 
-                                        <img src="~/images/members/@member.Photo" alt="Default Avatar" class="rounded-circle"
+                                        <img src="@member.Photo" alt="Default Avatar" class="rounded-circle"
                                              style="width: 40px; height: 40px;" />
                                                 }else
                                                 {
@@ -112,11 +112,11 @@
                                                     </li>
                                                     <li>
                                             <a asp-controller="Member" asp-action="Delete" asp-route-id="@member.Id"
-                                                           class="dropdown-item d-flex align-items-center gap-3 text-danger">
-                                                            <img src="~/images/x-circle 1.jpg" alt="delete icon"
-                                                                 style="width: 20px; height: 20px;" />
-                                                            <span>Delete</span>
-                                                        </a>
+                                               class="dropdown-item d-flex align-items-center gap-3 text-danger">
+                                                <img src="~/images/x-circle 1.jpg" alt="delete icon"
+                                                     style="width: 20px; height: 20px;" />
+                                                <span>Delete</span>
+                                            </a>
                                                     </li>
                                                 </ul>
                                             </div>
