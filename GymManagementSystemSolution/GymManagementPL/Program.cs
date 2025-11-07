@@ -48,6 +48,8 @@ namespace GymManagementPL
                 options.LoginPath = "/Account/Login";
                 options.AccessDeniedPath = "/Account/AccessDenied";
             });
+            builder.Services.AddScoped<IMemberShipService, MemberShipService>();
+            builder.Services.AddScoped<IMemberSessionService, MemberSessionService>();
 
             var app = builder.Build();
 

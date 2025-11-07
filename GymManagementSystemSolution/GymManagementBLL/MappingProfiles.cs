@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using GymManagementBLL.ViewModels.MemberSessionViewModels;
+using GymManagementBLL.ViewModels.MemberShipViewModels;
 using GymManagementBLL.ViewModels.MemberViewModels;
 using GymManagementBLL.ViewModels.PlanViewModels;
 using GymManagementBLL.ViewModels.SessionViewModels;
@@ -22,6 +24,8 @@ namespace GymManagementBLL
             MapMember();
             MapPlan();
             MapTrainer();
+            MapMemberShip();
+            MapMemberSession();
         }
 
       
@@ -117,6 +121,24 @@ namespace GymManagementBLL
                 dest.Address.Street = src.Street;
                 dest.UpdatedAt = DateTime.Now;
             });
+        }
+
+        private void MapMemberShip()
+        {
+              CreateMap<MemberShip, MemberShipViewModel>()
+        .ForMember(dest => dest.MemberName, opt => opt.MapFrom(src => src.Member.Name))
+        .ForMember(dest => dest.PlanName, opt => opt.MapFrom(src => src.Plan.Name))
+        .ForMember(dest => dest.MemberId, opt => opt.MapFrom(src => src.MemberId))
+        .ForMember(dest => dest.PlanId, opt => opt.MapFrom(src => src.PlanId));
+            CreateMap<CreateMemberShipViewModel, MemberShip>();
+        }
+
+        private void MapMemberSession()
+        {
+            CreateMap<MemberSession, MemberSessionViewModel>()
+                .ForMember(dest => dest.MemberName, opt => opt.MapFrom(src => src.Member.Name))
+                .ForMember(dest => dest.MemberId, opt => opt.MapFrom(src => src.MemberId))
+                .ForMember(dest => dest.SessionDescription, opt => opt.MapFrom(src => src.Session.Description));
         }
     }
 }

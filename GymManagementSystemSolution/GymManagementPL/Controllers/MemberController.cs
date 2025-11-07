@@ -122,7 +122,7 @@ namespace GymManagementPL.Controllers
 
         #region Delete Member
 
-        public ActionResult DeleteTrainer(int id)
+        public ActionResult Delete(int id)
         {
             if (id <= 0)
             {

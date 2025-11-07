@@ -26,18 +26,18 @@ namespace GymManagementBLL.ViewModels.SessionViewModels
         public TimeSpan Duration => EndDate - StartDate;
 
         public string Status
-            {
+        {
             get
             {
                 if (StartDate > DateTime.Now)
                     return "Upcoming";
-                else if (StartDate <= DateTime.Now && EndDate >= DateTime.Now) 
-                return "Completed";
-                else
+                else if (StartDate <= DateTime.Now && EndDate >= DateTime.Now)
                     return "Ongoing";
-
+                else
+                    return "Completed";
             }
         }
+
         #endregion
 
     }
